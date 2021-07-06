@@ -29,7 +29,7 @@ SECRET_KEY = env('DJANGO_SECRET', default='')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.environ.get('DEBUG') == 'on' else False
 
-ALLOWED_HOSTS = ['13.232.71.229', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -128,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_URL = "/authentication/static/"
+STATIC_URL = "/api/inventory/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),

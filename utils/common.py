@@ -17,17 +17,32 @@ def get_input_data(request):
     return input_data
 
 
-def generate_response(data=dict, message='', status=200):
+def generate_response(data=None, message='', status=200):
     if status == 200 or status == 201:
         status_bool = True
     else:
         status_bool = False
 
     return {
-               'data': data,
-               'message': message,
-               'status': False
-           }, status_bool
+        'data': data,
+        'message': message,
+        'status': status_bool
+    }
+
+
+def modify_slz_error(errors):
+    final_error = list()
+    for key, value in errors.items():
+        final_error.append(
+            {'error': str(key) + ': ' + str(value[0])}
+        )
+    return final_error
+
+
+def send_error(error, status=False, data=None):
+    if data is None:
+        data = {}
+    return {'message': [{'error': error}], 'data': data, 'status': status}, 400
 
 
 def change_file_name(filename):
@@ -74,21 +89,6 @@ def id_generator(size=4, chars=string.digits):
 
 def alpha_id_generator(size=4, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
-
-
-def modify_slz_error(errors):
-    final_error = list()
-    for key, value in errors.items():
-        final_error.append(
-            {'error': str(key) + ': ' + str(value[0])}
-        )
-    return final_error
-
-
-def send_error(error, status=False, data=None):
-    if data is None:
-        data = {}
-    return {'message': [{'error': error}], 'data': data, 'status': status}, HTTP_400_BAD_REQUEST
 
 
 class TokenGenerator(PasswordResetTokenGenerator):

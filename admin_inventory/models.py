@@ -7,19 +7,30 @@ from utils.constants import *
 
 
 class CategoryModel(ModelAbstractBase):
+    type = models.CharField(max_length=20, default=DEFAULT_PRODUCT_TYPE, choices=PRODUCT_TYPES)
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(blank=True)
+
+    def __str__(self):
+        return str(f"{self.title} - {self.type}")
 
 
 class TagModel(ModelAbstractBase):
+    type = models.CharField(max_length=20, default=DEFAULT_PRODUCT_TYPE, choices=PRODUCT_TYPES)
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(blank=True)
+
+    def __str__(self):
+        return str(f"{self.title} - {self.type}")
 
 
 class CollectionModel(ModelAbstractBase):
     organization = models.IntegerField(blank=False)
     title = models.CharField(max_length=50, blank=False)
     description = models.TextField(blank=True)
+
+    def __str__(self):
+        return str(f"{self.title}")
 
 
 class AdminProductModel(ModelAbstractBase):
@@ -30,7 +41,7 @@ class AdminProductModel(ModelAbstractBase):
             title: title of the permission
     """
     type = models.CharField(max_length=20, default=DEFAULT_PRODUCT_TYPE, choices=PRODUCT_TYPES)
-    category = models.ManyToManyField(to=CategoryModel)
+    category = models.ManyToManyField(to=CategoryModel, blank=True)
     is_part_of_collection = models.BooleanField(default=False)
     collection = models.ForeignKey(to=CollectionModel, on_delete=models.SET_NULL, null=True)
     data = JSONField(blank=True, null=True, default=dict)
@@ -48,7 +59,7 @@ class AdminProductModel(ModelAbstractBase):
     )
     is_premium = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
-    tags = models.ManyToManyField(to=TagModel)
+    tags = models.ManyToManyField(to=TagModel, blank=True)
 
     # For products like video, podcast, book, tips
     link = models.URLField(blank=True)
@@ -58,12 +69,18 @@ class AdminProductModel(ModelAbstractBase):
 
     id_deleted = models.BooleanField(default=False)
 
+    def __str__(self):
+        return str(f"{self.type}")
+
 
 class AdminProductTranslationModel(ModelAbstractBase):
     product = models.ForeignKey(to=AdminProductModel, related_name='product_translation', on_delete=models.CASCADE)
     title = models.CharField(max_length=50, help_text="title of the product")
     description = models.TextField(blank=True)
     language = models.CharField(max_length=50, blank=True, default='en-US')
+
+    def __str__(self):
+        return str(f"{self.product.type} - {self.title}")
 
 
 class AdminServiceModel(ModelAbstractBase):

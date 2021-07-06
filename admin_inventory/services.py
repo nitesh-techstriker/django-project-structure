@@ -4,17 +4,36 @@ from utils.common import *
 from rest_framework.status import *
 from utils.constants import *
 
+category_types = [RESUME_TYPE, SERVICE_TYPE, BOOK_TYPE, PITCH_TYPE, PODCAST_TYPE, VIDEO_TYPE, ADVICE_TYPE,
+                  ADVICE_TYPE]
+
 
 def create_product(input_data):
     error = product_create_validations(input_data)
     if error:
         return generate_response(message=error, status=HTTP_400_BAD_REQUEST)
     serializer = ProductSerializer(data=input_data)
+
+    import pdb;
+    pdb.set_trace()
     if serializer.is_valid(raise_exception=True):
-        serializer.save()
+        product = serializer.save()
+        add_additional_info(input_data, product)
+        input_data['id'] = product.id
+        return generate_response(data=input_data, message='Success! Product added.', status=HTTP_201_CREATED)
+
     else:
         return generate_response(message=serializer.error_messages, status=HTTP_400_BAD_REQUEST)
-    return generate_response(message='Success! Product added.', status=HTTP_201_CREATED)
+
+
+def add_additional_info(input_data, product):
+    if 'product_translation' in input_data and type(input_data['product_translation']) is list:
+        for translation in input_data['product_translation']:
+            AdminProductTranslationModel.objects.create(product=product, **translation)
+    if input_data['type'] == SERVICE_TYPE:
+        if 'service' in input_data and input_data['service']:
+            service_data = input_data['service']
+            AdminServiceModel.objects.create(product=product, **service_data)
 
 
 def product_create_validations(input_data):
@@ -24,12 +43,11 @@ def product_create_validations(input_data):
     elif 'product_translation' not in input_data or not input_data['product_translation']:
         error = 'Error! product_translation is missing or invalid.'
     elif 'product_translation' in input_data:
-        if 'language' not in input_data['product_translation'] or not input_data['product_translation']['language']:
-            error = 'Error! language is missing or invalid in product_translation.'
-        elif 'title' not in input_data['product_translation'] or not input_data['product_translation']['title']:
-            error = 'Error! title is missing or invalid in product_translation.'
-        elif 'description' not in input_data['product_translation']:
-            error = 'Error! description is missing or invalid in product_translation.'
+        for translation in input_data['product_translation']:
+            if 'language' not in translation or not translation['language']:
+                error = 'Error! language is missing or invalid in product_translation.'
+            elif 'title' not in translation or not translation['title']:
+                error = 'Error! title is missing or invalid in product_translation.'
 
     return error
 
@@ -90,3 +108,45 @@ def delete_product(input_data):
         return generate_response(message='Error! id is missing or invalid.', status=HTTP_400_BAD_REQUEST)
     AdminProductModel.objects.filter(id=input_data['id']).update(is_deleted=True)
     return generate_response(message='Success! product deleted.')
+
+
+def create_category(input_data):
+    if 'type' not in input_data or not input_data['type'] or input_data['type'] not in category_types:
+        return generate_response(
+            message=f'Error! type is missing or invalid. it should be one of {", ".join(category_types)}')
+    if CategoryModel.objects.filter(type=input_data['type'], title=input_data['title']).exists():
+        return generate_response(message='Error! category already exists.', status=HTTP_400_BAD_REQUEST)
+    serializer = CategorySerializer(data=input_data)
+    if serializer.is_valid(raise_exception=True):
+        profile = serializer.save()
+    else:
+        return generate_response(message=serializer.error_messages, status=HTTP_400_BAD_REQUEST)
+    return generate_response(data=profile.id, message='Success! Product added.', status=HTTP_201_CREATED)
+
+
+def delete_category(input_data):
+    if 'id' not in input_data or not input_data['id']:
+        return generate_response(message='Error! id is missing or invalid.', status=HTTP_400_BAD_REQUEST)
+    CategoryModel.objects.filter(id=input_data['id']).delete()
+    return generate_response(message='Success! category deleted.')
+
+
+def create_tag(input_data):
+    if 'type' not in input_data or not input_data['type'] or input_data['type'] not in category_types:
+        return generate_response(
+            message=f'Error! type is missing or invalid. it should be one of {", ".join(category_types)}')
+    if TagModel.objects.filter(type=input_data['type'], title=input_data['title']).exists():
+        return generate_response(message='Error! category already exists.', status=HTTP_400_BAD_REQUEST)
+    serializer = TagSerializer(data=input_data)
+    if serializer.is_valid(raise_exception=True):
+        profile = serializer.save()
+    else:
+        return generate_response(message=serializer.error_messages, status=HTTP_400_BAD_REQUEST)
+    return generate_response(data=profile.id, message='Success! Product added.', status=HTTP_201_CREATED)
+
+
+def delete_tag(input_data):
+    if 'id' not in input_data or not input_data['id']:
+        return generate_response(message='Error! id is missing or invalid.', status=HTTP_400_BAD_REQUEST)
+    TagModel.objects.filter(id=input_data['id']).delete()
+    return generate_response(message='Success! category deleted.')
