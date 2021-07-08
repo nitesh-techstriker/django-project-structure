@@ -14,16 +14,15 @@ def create_product(input_data):
         return generate_response(message=error, status=HTTP_400_BAD_REQUEST)
     serializer = ProductSerializer(data=input_data)
 
-    import pdb;
-    pdb.set_trace()
-    if serializer.is_valid(raise_exception=True):
+
+    if serializer.is_valid():
         product = serializer.save()
         add_additional_info(input_data, product)
         input_data['id'] = product.id
         return generate_response(data=input_data, message='Success! Product added.', status=HTTP_201_CREATED)
 
     else:
-        return generate_response(message=serializer.error_messages, status=HTTP_400_BAD_REQUEST)
+        return generate_response(message=serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 def add_additional_info(input_data, product):
@@ -117,10 +116,10 @@ def create_category(input_data):
     if CategoryModel.objects.filter(type=input_data['type'], title=input_data['title']).exists():
         return generate_response(message='Error! category already exists.', status=HTTP_400_BAD_REQUEST)
     serializer = CategorySerializer(data=input_data)
-    if serializer.is_valid(raise_exception=True):
+    if serializer.is_valid():
         profile = serializer.save()
     else:
-        return generate_response(message=serializer.error_messages, status=HTTP_400_BAD_REQUEST)
+        return generate_response(message=serializer.errors, status=HTTP_400_BAD_REQUEST)
     return generate_response(data=profile.id, message='Success! Product added.', status=HTTP_201_CREATED)
 
 
@@ -138,10 +137,10 @@ def create_tag(input_data):
     if TagModel.objects.filter(type=input_data['type'], title=input_data['title']).exists():
         return generate_response(message='Error! category already exists.', status=HTTP_400_BAD_REQUEST)
     serializer = TagSerializer(data=input_data)
-    if serializer.is_valid(raise_exception=True):
+    if serializer.is_valid():
         profile = serializer.save()
     else:
-        return generate_response(message=serializer.error_messages, status=HTTP_400_BAD_REQUEST)
+        return generate_response(message=serializer.errors, status=HTTP_400_BAD_REQUEST)
     return generate_response(data=profile.id, message='Success! Product added.', status=HTTP_201_CREATED)
 
 

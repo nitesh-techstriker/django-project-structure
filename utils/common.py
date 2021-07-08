@@ -17,25 +17,40 @@ def get_input_data(request):
     return input_data
 
 
-def generate_response(data=None, message='', status=200):
+def generate_response(data=None, message=None, status=200):
     if status == 200 or status == 201:
         status_bool = True
     else:
         status_bool = False
 
     return {
-        'data': data,
-        'message': message,
-        'status': status_bool
-    }
+               'data': data,
+               'message': modify_slz_error(message, status_bool),
+               'status': status_bool
+           }, status
 
 
-def modify_slz_error(errors):
+def modify_slz_error(message, status):
     final_error = list()
-    for key, value in errors.items():
-        final_error.append(
-            {'error': str(key) + ': ' + str(value[0])}
-        )
+    if message:
+        if type(message) == str:
+            if not status:
+                final_error.append(
+                    {
+                        'error': message
+                    }
+                )
+            else:
+                final_error = message
+        elif type(message) == list:
+            final_error = message
+        else:
+            for key, value in message.items():
+                final_error.append(
+                    {'error': str(key) + ': ' + str(value[0])}
+                )
+    else:
+        final_error = None
     return final_error
 
 

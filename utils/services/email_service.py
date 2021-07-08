@@ -20,16 +20,3 @@ def account_verification_email_send(email, user, forgetpassword_url):
         mail_subject, message, to=[to_email]
     )
     email.send()
-
-
-def subscription_email_send(email):
-    mail_subject = 'FLYART: Subscription.'
-    message = render_to_string('email/subscription_email.html', {
-        'email': email,
-        'url': os.environ.get("API_URL")
-    })
-    to_email = email
-    email = EmailMessage(
-        mail_subject, message, to=[to_email]
-    )
-    email.send()

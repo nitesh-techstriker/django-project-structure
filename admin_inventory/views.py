@@ -13,26 +13,26 @@ class ProductView(APIView):
     @staticmethod
     def get(request):
         input_data = get_input_data(request)
-        response = get_product(input_data)
-        return Response(response)
+        response, status = get_product(input_data)
+        return Response(response, status=status)
 
     @staticmethod
     def post(request):
         input_data = get_input_data(request)
-        response = create_product(input_data)
-        return Response(response)
+        response, status = create_product(input_data)
+        return Response(response, status=status)
 
     @staticmethod
     def update(request):
         input_data = get_input_data(request)
-        response = update_product(input_data)
-        return Response(response)
+        response, status = update_product(input_data)
+        return Response(response, status=status)
 
     @staticmethod
     def delete(request):
         input_data = get_input_data(request)
-        response = delete_product(input_data)
-        return Response(response)
+        response, status = delete_product(input_data)
+        return Response(response, status=status)
 
 
 class CategoryView(APIView):
@@ -43,20 +43,20 @@ class CategoryView(APIView):
     @staticmethod
     def get(request):
         input_data = get_input_data(request)
-        response = get_category(input_data)
-        return Response(response)
+        response, status = get_category(input_data)
+        return Response(response, status=status)
 
     @staticmethod
     def post(request):
         input_data = get_input_data(request)
-        response = create_category(input_data)
-        return Response(response)
+        response, status = create_category(input_data)
+        return Response(response, status=status)
 
     @staticmethod
     def delete(request):
         input_data = get_input_data(request)
-        response = delete_category(input_data)
-        return Response(response)
+        response, status = delete_category(input_data)
+        return Response(response, status=status)
 
 
 class TagView(APIView):
@@ -67,17 +67,18 @@ class TagView(APIView):
     @staticmethod
     def get(request):
         input_data = get_input_data(request)
-        response = get_tag(input_data)
-        return Response(response)
+        response, status = get_tag(input_data)
+        return Response(response, status=status)
 
     @staticmethod
     def post(request):
         input_data = get_input_data(request)
-        response = create_tag(input_data)
-        return Response(response)
+        response, status = create_tag(input_data)
+        return Response(response, status=status)
 
     @staticmethod
     def delete(request):
         input_data = get_input_data(request)
-        response = delete_tag(input_data)
-        return Response(response)
+        response, status = delete_tag(input_data)
+        return Response(response, status=status)
+

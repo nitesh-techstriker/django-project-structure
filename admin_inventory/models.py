@@ -2,7 +2,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.db.models import JSONField
 
-from utils.base_model import ModelAbstractBase
+from utils.db.base_model import ModelAbstractBase
 from utils.constants import *
 
 
@@ -75,7 +75,7 @@ class AdminProductModel(ModelAbstractBase):
 
 class AdminProductTranslationModel(ModelAbstractBase):
     product = models.ForeignKey(to=AdminProductModel, related_name='product_translation', on_delete=models.CASCADE)
-    title = models.CharField(max_length=50, help_text="title of the product")
+    title = models.CharField(max_length=50, help_text="title of the product", name='title', verbose_name='title')
     description = models.TextField(blank=True)
     language = models.CharField(max_length=50, blank=True, default='en-US')
 

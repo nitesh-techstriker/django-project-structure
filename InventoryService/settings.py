@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # Application Apps
     'admin_inventory',
+    'builder',
 ]
 
 MIDDLEWARE = [
