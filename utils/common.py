@@ -5,6 +5,7 @@ import random
 from django.core.files.storage import FileSystemStorage
 import six
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from rest_framework.status import *
 
 
 # import pandas as pd
@@ -18,7 +19,7 @@ def get_input_data(request):
 
 
 def generate_response(data=None, message=None, status=200):
-    if status == 200 or status == 201:
+    if status == HTTP_200_OK or status == HTTP_201_CREATED:
         status_bool = True
     else:
         status_bool = False
@@ -26,8 +27,9 @@ def generate_response(data=None, message=None, status=200):
     return {
                'data': data,
                'message': modify_slz_error(message, status_bool),
-               'status': status_bool
-           }, status
+               'status': status_bool,
+               'status_code': status
+           }, HTTP_200_OK
 
 
 def modify_slz_error(message, status):

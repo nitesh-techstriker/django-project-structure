@@ -10,7 +10,7 @@ from builder.models import *
 class BuilderFilter(serializers.ModelSerializer):
     class Meta:
         model = BuilderModel
-        fields = ('id', 'type', 'data', 'images', 'docs')
+        fields = ('id','title','description', 'language', 'category', 'type', 'data', 'images', 'docs')
 
 
 def get_builder(input_data):
