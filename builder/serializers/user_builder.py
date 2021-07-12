@@ -1,5 +1,5 @@
 from rest_framework.serializers import Serializer, ModelSerializer
-from .models import *
+from builder.models.user_builder import *
 
 
 class BuilderSerializer(ModelSerializer):

@@ -1,7 +1,7 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.db.models import JSONField
-from admin_inventory.models import CategoryModel
+from builder.models.admin_builder import CategoryModel
 from utils.db.base_model import ModelAbstractBase
 from utils.constants import *
 

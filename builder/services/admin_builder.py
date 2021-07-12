@@ -1,5 +1,5 @@
-from admin_inventory.models import *
-from admin_inventory.serializers import *
+from builder.models.admin_builder import *
+from builder.serializers.admin_builder import *
 from utils.common import *
 from rest_framework.status import *
 from utils.constants import *
@@ -105,7 +105,7 @@ def update_service(product, input_data):
 def delete_product(input_data):
     if 'id' not in input_data or not input_data['id']:
         return generate_response(message='Error! id is missing or invalid.', status=HTTP_400_BAD_REQUEST)
-    AdminProductModel.objects.filter(id=input_data['id']).update(is_deleted=True)
+    AdminProductModel.objects.filter(id=input_data['id']).update(id_deleted=True)
     return generate_response(message='Success! product deleted.')
 
 

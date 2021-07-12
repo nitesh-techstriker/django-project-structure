@@ -28,8 +28,7 @@ def generate_response(data=None, message=None, status=200):
                'data': data,
                'message': modify_slz_error(message, status_bool),
                'status': status_bool,
-               'status_code': status
-           }, HTTP_200_OK
+           }, status
 
 
 def modify_slz_error(message, status):

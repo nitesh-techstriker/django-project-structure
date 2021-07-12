@@ -1,10 +1,10 @@
 import django_filters
-from admin_inventory.models import AdminProductModel
+from builder.models.admin_builder import AdminProductModel
 from django.db.models import Q
-from admin_inventory.serializers import *
+from builder.serializers.admin_builder import *
 from utils.common import *
 from rest_framework import serializers
-from admin_inventory.models import *
+from builder.models.user_builder import *
 
 
 class ProductFilter(serializers.ModelSerializer):

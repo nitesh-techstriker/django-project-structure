@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # Application Apps
-    'admin_inventory',
     'builder',
 ]
 

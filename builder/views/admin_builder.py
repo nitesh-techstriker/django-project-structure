@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from admin_inventory.services import *
-from admin_inventory.selectors import *
+from builder.services.admin_builder import *
+from builder.selectors.admin_builder import *
 from utils.common import get_input_data
 
 
@@ -81,4 +81,3 @@ class TagView(APIView):
         input_data = get_input_data(request)
         response, status = delete_tag(input_data)
         return Response(response, status=status)
-
